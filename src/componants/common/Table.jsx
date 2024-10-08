@@ -20,7 +20,6 @@ const Table = ({ tasks, onDelete, headers }) => {
             <td>
               <button
                 className="btn btn-danger btn-sm"
-                style={{ cursor: "pointer" }}
                 onClick={() => onDelete(task.id)}
               >
                 Delete
