@@ -5,6 +5,7 @@ import Pagination from "./common/Pagination";
 import { paginate } from "../utils/Paginate";
 import ListGroup from "./common/ListGroup";
 import _ from "lodash";
+import TaskForm from "./TaskForm";
 
 function TaskTable() {
   const [tasks, setTasks] = useState([]);
@@ -76,9 +77,10 @@ function TaskTable() {
       </div>
       <div className="col">
         <div className="container">
-          <div class="d-flex justify-content-end mt-3 me-3">
+          {/* <div class="d-flex justify-content-end mt-3 me-3">
             <button class="btn btn-success">Create</button>
-          </div>
+          </div> */}
+          <TaskForm users={users.slice(1)} />
           <Table
             tasks={paginatedTasks}
             onDelete={handleDelete}
