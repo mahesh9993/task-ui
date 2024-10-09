@@ -8,7 +8,7 @@ const ListGroup = ({
   textProperty,
 }) => {
   return (
-    <div className="ms-5 mt-3">
+    <div className="ms-5 mt-5">
       <ul class="list-group">
         {items.map((item) => (
           <li

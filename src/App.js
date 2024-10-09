@@ -1,10 +1,22 @@
 import "./App.css";
-import TaskTable from "./componants/TaskTable";
+import HomePage from "./componants/HomePage";
+
+import NotFoundPage from "./componants/NotFoundPage";
+
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <HomePage />,
+    errorElement: <NotFoundPage />,
+  },
+]);
 
 function App() {
   return (
     <div className="App">
-      <TaskTable />
+      <RouterProvider router={router} />
     </div>
   );
 }

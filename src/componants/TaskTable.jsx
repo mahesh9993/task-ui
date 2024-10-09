@@ -16,7 +16,9 @@ function TaskTable() {
   const tableHeaders = ["Task Id", "User Id", "Title", "Status", ""];
 
   useEffect(() => {
-    getTasks().then((res) => setTasks(res.data));
+    getTasks()
+      .then((res) => setTasks(res.data))
+      .catch((err) => console.log(err));
   }, []);
 
   const filteredTasks =
@@ -74,6 +76,9 @@ function TaskTable() {
       </div>
       <div className="col">
         <div className="container">
+          <div class="d-flex justify-content-end mt-3 me-3">
+            <button class="btn btn-success">Create</button>
+          </div>
           <Table
             tasks={paginatedTasks}
             onDelete={handleDelete}
