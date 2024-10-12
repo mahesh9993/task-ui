@@ -12,9 +12,10 @@ import ListGroup from "./common/ListGroup";
 import _ from "lodash";
 import TaskForm from "./TaskForm";
 
-function TaskTable() {
+const TaskTable = ({ searchTerm }) => {
   const [tasks, setTasks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filteredTasks, setFilteredTasks] = useState([]);
   const [paginatedTasks, setPaginatedTasks] = useState([]);
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState([]);
@@ -31,17 +32,28 @@ function TaskTable() {
     //console.log("get tasks", tasks);
   }, [createTaskTrigger]);
 
-  const filteredTasks =
-    selectedUser && selectedUser.id
-      ? tasks.filter((t) => t.userId === selectedUser.id)
-      : tasks;
-
   useEffect(() => {
     getUsers();
-    setPaginatedTasks(paginate(filteredTasks, currentPage, pageSize));
-  }, [tasks, currentPage, selectedUser]);
+  }, [tasks]);
 
-  //console.log("tasks", tasks);
+  useEffect(() => {
+    let result = tasks;
+
+    if (selectedUser && selectedUser.id) {
+      result = result.filter((t) => t.userId === selectedUser.id);
+    }
+
+    if (searchTerm) {
+      result = result.filter((t) =>
+        t.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    setFilteredTasks(result);
+
+    const paginated = paginate(result, currentPage, pageSize);
+    setPaginatedTasks(paginated);
+  }, [tasks, selectedUser, searchTerm, currentPage]);
 
   function handleDelete(id) {
     const updatedTaskList = tasks.filter((t) => t.id !== id);
@@ -63,7 +75,7 @@ function TaskTable() {
     const uniqueUsers = _.uniqBy(usersArray, "id");
 
     const users = [{ id: "", name: "All Users" }, ...uniqueUsers];
-    console.log(users);
+    //console.log(users);
 
     setUsers(users);
   }
@@ -143,6 +155,6 @@ function TaskTable() {
       </div>
     </div>
   );
-}
+};
 
 export default TaskTable;
