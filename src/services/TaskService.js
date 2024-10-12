@@ -7,11 +7,15 @@ export const getTasks = () => {
 };
 
 export const createTask = (task) => {
-  return axios.post(API_URL, task);
+  return axios
+    .post(API_URL, task)
+    .then((res) => console.log("server response on create", res));
 };
 
 export const updateTask = (id, updatedTask) => {
-  return axios.put(`${API_URL}/${id}`, updatedTask);
+  return axios
+    .put(`${API_URL}/${id}`, updatedTask)
+    .then((res) => console.log("server response on update", res));
 };
 
 export const deleteTask = (id) => {

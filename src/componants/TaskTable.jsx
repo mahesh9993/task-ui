@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getTasks, deleteTask } from "./../services/TaskService";
+import {
+  getTasks,
+  deleteTask,
+  createTask,
+  updateTask,
+} from "./../services/TaskService";
 import Table from "./common/Table";
 import Pagination from "./common/Pagination";
 import { paginate } from "../utils/Paginate";
@@ -13,14 +18,18 @@ function TaskTable() {
   const [paginatedTasks, setPaginatedTasks] = useState([]);
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState([]);
+  const [createTaskTrigger, setCreateTaskTrigger] = useState(false);
+  const [currentTask, setCurrentTask] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const pageSize = 10;
   const tableHeaders = ["Task Id", "User Id", "Title", "Status", ""];
 
   useEffect(() => {
     getTasks()
-      .then((res) => setTasks(res.data))
+      .then((res) => setTasks(res.data.slice(0, 50)))
       .catch((err) => console.log(err));
-  }, []);
+    //console.log("get tasks", tasks);
+  }, [createTaskTrigger]);
 
   const filteredTasks =
     selectedUser && selectedUser.id
@@ -46,22 +55,50 @@ function TaskTable() {
   };
 
   function getUsers() {
-    const usersArray = [{ id: "", name: "All Users" }];
-    tasks.map((task) => {
-      const user = {};
-      user.id = task.userId;
-      user.name = "User " + task.userId;
-      usersArray.push(user);
-    });
-    const users = _.uniqBy(usersArray, "id");
+    const usersArray = tasks.map((task) => ({
+      id: task.userId,
+      name: "User " + task.userId,
+    }));
+
+    const uniqueUsers = _.uniqBy(usersArray, "id");
+
+    const users = [{ id: "", name: "All Users" }, ...uniqueUsers];
+    console.log(users);
+
     setUsers(users);
-    //console.log(users);
   }
 
   const handleUserSelect = (user) => {
     //console.log(user);
     setSelectedUser(user);
     setCurrentPage(1);
+  };
+
+  const handleCreateOrUpdateTask = (task) => {
+    if (currentTask) {
+      const updatedTasks = tasks.map((t) =>
+        t.id === task.id ? { ...task } : t
+      );
+      setTasks(updatedTasks);
+      updateTask(task.id, task);
+      getUsers();
+    } else {
+      createTask(task);
+      setCreateTaskTrigger(!createTaskTrigger);
+    }
+
+    setCurrentTask(null);
+    setShowModal(false);
+  };
+
+  const handleEdit = (task) => {
+    setCurrentTask(task);
+    setShowModal(true);
+  };
+
+  const handleCreateTaskBtn = () => {
+    setCurrentTask(null);
+    setShowModal(true);
   };
 
   return (
@@ -77,14 +114,24 @@ function TaskTable() {
       </div>
       <div className="col">
         <div className="container">
-          {/* <div class="d-flex justify-content-end mt-3 me-3">
-            <button class="btn btn-success">Create</button>
-          </div> */}
-          <TaskForm users={users.slice(1)} />
+          <button
+            className="btn btn-success mt-3"
+            onClick={handleCreateTaskBtn}
+          >
+            Create New Task
+          </button>
+          <TaskForm
+            users={users.slice(1)}
+            onSubmit={handleCreateOrUpdateTask}
+            currentTask={currentTask}
+            showModal={showModal}
+            setShowModal={setShowModal}
+          />
           <Table
             tasks={paginatedTasks}
             onDelete={handleDelete}
             headers={tableHeaders}
+            onEdit={handleEdit}
           />
           <Pagination
             itemsCount={filteredTasks.length}

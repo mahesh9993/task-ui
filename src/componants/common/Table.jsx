@@ -1,6 +1,6 @@
 import React from "react";
 
-const Table = ({ tasks, onDelete, headers }) => {
+const Table = ({ tasks, onDelete, headers, onEdit }) => {
   return (
     <table className="table table-striped table-hover">
       <thead>
@@ -16,10 +16,16 @@ const Table = ({ tasks, onDelete, headers }) => {
             <td>{task.id}</td>
             <td>{task.userId}</td>
             <td className="text-start">{task.title}</td>
-            <td>{task.completed ? "completed" : "uncompleted"}</td>
+            <td>{task.completed ? "completed" : "pending"}</td>
             <td>
               <button
-                className="btn btn-danger btn-sm"
+                className="btn btn-success btn-sm m-1"
+                onClick={() => onEdit(task)}
+              >
+                Edit
+              </button>
+              <button
+                className="btn btn-danger btn-sm m-1"
                 onClick={() => onDelete(task.id)}
               >
                 Delete

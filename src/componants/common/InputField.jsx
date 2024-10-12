@@ -1,6 +1,14 @@
 import React from "react";
 
-const InputField = ({ name, label, onChange, type, value }) => {
+const InputField = ({
+  name,
+  label,
+  onChange,
+  type,
+  value,
+  errorMsg,
+  currentTask,
+}) => {
   return (
     <div className="form-group">
       <label for={name} class="form-label">
@@ -12,7 +20,9 @@ const InputField = ({ name, label, onChange, type, value }) => {
         id={name}
         value={value}
         onChange={onChange}
-      ></input>
+        readOnly={currentTask && name === "id" ? true : false}
+      />
+      {errorMsg && <div className="alert alert-danger">{errorMsg}</div>}
     </div>
   );
 };
