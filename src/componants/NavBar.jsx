@@ -5,19 +5,19 @@ const NavBar = ({ searchTerm, onSearch }) => {
     onSearch(e.target.value);
   };
   return (
-    <nav class="navbar navbar-light bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand">Tasks</a>
-        <form class="d-flex" onSubmit={(e) => e.preventDefault()}>
+    <nav className="navbar navbar-light bg-light">
+      <div className="container-fluid">
+        <a className="navbar-brand">Tasks</a>
+        <form className="d-flex" onSubmit={(e) => e.preventDefault()}>
           <input
-            class="form-control me-2"
+            className="form-control me-2"
             type="search"
             placeholder="Search"
             aria-label="Search"
             value={searchTerm}
             onChange={handleSearchChange}
           ></input>
-          <button class="btn btn-outline-success" type="submit">
+          <button className="btn btn-outline-success" type="submit">
             Search
           </button>
         </form>

@@ -146,6 +146,7 @@ const TaskForm = ({
                   <Redio
                     completed={formData.completed}
                     onChange={handleStatusChange}
+                    currentTask={currentTask}
                   />
                 </form>
               </div>

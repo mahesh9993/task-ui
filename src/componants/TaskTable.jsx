@@ -27,7 +27,7 @@ const TaskTable = ({ searchTerm }) => {
 
   useEffect(() => {
     getTasks()
-      .then((res) => setTasks(res.data.slice(0, 50)))
+      .then((res) => setTasks(res.slice(0, 50)))
       .catch((err) => console.log(err));
     //console.log("get tasks", tasks);
   }, [createTaskTrigger]);

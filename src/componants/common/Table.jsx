@@ -6,7 +6,9 @@ const Table = ({ tasks, onDelete, headers, onEdit }) => {
       <thead>
         <tr>
           {headers.map((header) => (
-            <th scope="col">{header}</th>
+            <th key={header} scope="col">
+              {header}
+            </th>
           ))}
         </tr>
       </thead>

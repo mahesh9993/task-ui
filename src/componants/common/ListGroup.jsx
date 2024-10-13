@@ -9,10 +9,10 @@ const ListGroup = ({
 }) => {
   return (
     <div className="ms-5 mt-5">
-      <ul class="list-group">
+      <ul className="list-group">
         {items.map((item) => (
           <li
-            class={
+            className={
               item[valueProperty] === selectedItem[valueProperty]
                 ? "list-group-item cursor-pointer active"
                 : "list-group-item cursor-pointer"
